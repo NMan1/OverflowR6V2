@@ -1,23 +1,26 @@
 #include <Windows.h>
 #include <iostream>
-#include "driver.h"
-#include "menu.h"
-#include "Settings.h"
-#include "Config.h"
-#include "Cheat.h"
+#include "driver/driver.h"
+#include "menu/menu.h"
+#include "helpers/settings.h"
+#include "game/game.h"
+#include "game/cheat.h"
 
 DWORD64 base_address = NULL;
 
 int main()
 {
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
 	get_process_id("RainbowSix");
 	base_address = get_module_base_address("RainbowSix.exe");
 	
+	std::thread KeysLoop(Keys);
 	std::thread DoCheat(Cheat::MainCheat);
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
-	Menu::SetupMenu();
+	menu::SetupMenu();
 	while (true)
 	{
 		// Setup Input
@@ -29,9 +32,9 @@ int main()
 		}
 
 		// Render main cheat menu if in the game
-		Menu::BeginDraw();
-		Menu::RenderMenu();
-		Menu::EndDraw();
+		menu::be();
+		menu::RenderMenu();
+		menu::EndDraw();
 
 		// End UM & Driver
 		if (g_Settings::bCheatThread)
@@ -48,7 +51,7 @@ int main()
 	LegitCfg->close();
 	RageCfg->close();
 
-	Menu::MenuShutDown();  // End Menu Allocations and Handles
+	menu::MenuShutDown();  // End Menu Allocations and Handles
 
 	std::cin.get();
 }

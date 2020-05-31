@@ -16,7 +16,7 @@ extern int PasswordAttempt;
 using namespace ImGui;
 
 extern std::string Status;
-namespace Menu
+namespace menu
 {
 	/* DirectX Pointers */
 	extern ID3D11Device* g_pd3dDevice;
@@ -50,19 +50,15 @@ namespace Menu
 
 
 	/* Functions */
-	void BeginDraw();
-	void EndDraw();
+	void begin_draw();
+	void end_draw();
 
-	void SetWindowLoop();
+	void render_buttons();
+	void render_menu();
+	void menu_shutdown();
 
-	void RenderLogin();
-	void RenderButtons();
-	void RenderMenu();
-	void MenuShutDown();
-
-	void Init();
-	void SetUpLoginMenu();
-	void SetupMenu();
+	void init();
+	void setup_menu();
 
 	extern LPCTSTR Logo;
 	extern ID3D11ShaderResourceView* LogoTexture;

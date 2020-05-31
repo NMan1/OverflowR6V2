@@ -1,5 +1,5 @@
-#include "Cheat.h"
-#include "Settings.h"
+#include "cheat.h"
+#include "../helpers/settings.h"
 #include "menu.h"
 #include <thread>
 #include "game.h"
@@ -19,7 +19,7 @@ void ToggleLegit();
 static auto Toggle = false; int j = 0; //Flag 
 static bool DoSil = false;  int k = 0; //Flag
 static bool DoNo = false;
-void Keys()
+void keys()
 {
 	while (true)
 	{
@@ -53,7 +53,7 @@ void Keys()
 	}
 }
 
-void Cheat::MainCheat()
+void cheat::main_cheat()
 {
 	bool DoOnce = true;
 	while (true)
@@ -82,22 +82,6 @@ void Cheat::MainCheat()
 				}
 				OldRoundState = RoundState;
 			}
-
-			//if (DoSil)
-			//{
-			//	if (!Toggle)
-			//	{
-			//		Driver.SendMsg("SILOF");
-			//		Toggle = true;
-			//	}
-			//	else if (Toggle)
-			//	{
-			//		Driver.SendMsg("SILON");
-			//		Toggle = false;
-			//	}
-			//	k = 1;
-			//	DoSil = false;
-			//}
 
 			if (DoNo)
 			{
@@ -275,7 +259,7 @@ void Prep_Action()
 	//}
 }
 
-void Cheat::SetSettings(bool Fov, bool Cav, bool Outline, bool Damage)
+void cheat::set_settings(bool Fov, bool Cav, bool Outline, bool Damage)
 {
 	/* Set The Settings To True, Allowing The Functions To Run */
 	if (Cav)

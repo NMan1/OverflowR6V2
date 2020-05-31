@@ -16,7 +16,7 @@ using namespace g_Settings;
 std::string Status;
 int	PasswordAttempt = 0;
 
-//Menu::Logo = "D:\\Everything\\BigPCheatLogo.png";
+//menu::Logo = "D:\\Everything\\BigPCheatLogo.png";
 
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
@@ -26,7 +26,7 @@ void CleanupRenderTarget();
 ImVec4 clear_color;
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace Menu
+namespace menu
 {
 	/* DirectX Pointers */
 	ID3D11Device* g_pd3dDevice = NULL;
@@ -62,7 +62,7 @@ namespace Menu
 	ID3D11ShaderResourceView* LogoTexture = NULL;
 }
 
-void Menu::Init()
+void menu::init()
 {
 	/* Colors */
 	StyleColorsBlueMain();
@@ -118,7 +118,7 @@ void Menu::Init()
 	return;
 }
 
-void Menu::MenuShutDown()
+void menu::menu_shutdown()
 {
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
@@ -130,16 +130,7 @@ void Menu::MenuShutDown()
 	return;
 }
 
-void Menu::SetWindowLoop()
-{
-	while (true)
-	{
-		SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-		Sleep(1);
-	}
-}
-
-void Menu::BeginDraw()
+void menu::begin_draw()
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
@@ -148,7 +139,7 @@ void Menu::BeginDraw()
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 }
 
-void Menu::EndDraw()
+void menu::end_draw()
 {
 	// Rendering
 	float clearColor[4] = { 0.0f,0.0f,0.0f,0.0f };
@@ -159,7 +150,7 @@ void Menu::EndDraw()
 	g_pSwapChain->Present(1, 0); // Present with vsync
 }
 
-void Menu::SetupMenu()
+void menu::setup_menu()
 {
 	// Create application window
 	wc = { sizeof(WNDCLASSEX), NULL, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, ("Overflow"), NULL };
@@ -207,49 +198,6 @@ void Menu::SetupMenu()
 	return;
 }
 
-void Menu::SetUpLoginMenu()
-{
-	// Create application window
-	wc = { sizeof(WNDCLASSEX), NULL, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, (("Overflow Injector")), NULL };
-	::RegisterClassEx(&wc);
-	hwnd = ::CreateWindow(wc.lpszClassName, _T(("Overflow  Loader")), 0, 1100, 300, 336, 269, NULL, NULL, wc.hInstance, NULL);
-	//hwnd = ::CreateWindow(wc.lpszClassName, _T(xorstr_("Overflow  Loader")), 0, 1100, 300, 432, 400, NULL, NULL, wc.hInstance, NULL);
-
-	// Initialize Direct3D
-	if (!CreateDeviceD3D(hwnd))
-	{
-		CleanupDeviceD3D();
-		::UnregisterClass(wc.lpszClassName, wc.hInstance);
-		return;
-	}
-
-	// Show the window
-	::ShowWindow(hwnd, SW_SHOW);
-	::UpdateWindow(hwnd);
-
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-	// Setup Platform/Renderer bindings
-	ImGui_ImplWin32_Init(hwnd);
-	ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
-
-	// Curosr
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-
-	// Colors
-	Init();
-
-	// Our state
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	return;
-}
-
 bool CreateDeviceD3D(HWND hWnd)
 {
 	// Setup swap chain
@@ -273,7 +221,7 @@ bool CreateDeviceD3D(HWND hWnd)
 	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 	D3D_FEATURE_LEVEL featureLevel;
 	const D3D_FEATURE_LEVEL featureLevelArray[2] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0, };
-	if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &Menu::g_pSwapChain, &Menu::g_pd3dDevice, &featureLevel, &Menu::g_pd3dDeviceContext) != S_OK)
+	if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &menu::g_pSwapChain, &menu::g_pd3dDevice, &featureLevel, &menu::g_pd3dDeviceContext) != S_OK)
 		return false;
 
 	CreateRenderTarget();
@@ -283,24 +231,24 @@ bool CreateDeviceD3D(HWND hWnd)
 void CleanupDeviceD3D()
 {
 	CleanupRenderTarget();
-	if (Menu::g_pSwapChain) { Menu::g_pSwapChain->Release(); Menu::g_pSwapChain = NULL; }
-	if (Menu::g_pd3dDeviceContext) { Menu::g_pd3dDeviceContext->Release(); Menu::g_pd3dDeviceContext = NULL; }
-	if (Menu::g_pd3dDevice) { Menu::g_pd3dDevice->Release(); Menu::g_pd3dDevice = NULL; }
+	if (menu::g_pSwapChain) { menu::g_pSwapChain->Release(); menu::g_pSwapChain = NULL; }
+	if (menu::g_pd3dDeviceContext) { menu::g_pd3dDeviceContext->Release(); menu::g_pd3dDeviceContext = NULL; }
+	if (menu::g_pd3dDevice) { menu::g_pd3dDevice->Release(); menu::g_pd3dDevice = NULL; }
 	return;
 }
 
 void CreateRenderTarget()
 {
 	ID3D11Texture2D* pBackBuffer;
-	Menu::g_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
-	Menu::g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &Menu::g_mainRenderTargetView);
+	menu::g_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
+	menu::g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &menu::g_mainRenderTargetView);
 	pBackBuffer->Release();
 	return;
 }
 
 void CleanupRenderTarget()
 {
-	if (Menu::g_mainRenderTargetView) { Menu::g_mainRenderTargetView->Release(); Menu::g_mainRenderTargetView = NULL; }
+	if (menu::g_mainRenderTargetView) { menu::g_mainRenderTargetView->Release(); menu::g_mainRenderTargetView = NULL; }
 	return;
 }
 
@@ -315,10 +263,10 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_SIZE:
-		if (Menu::g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
+		if (menu::g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
 		{
 			CleanupRenderTarget();
-			Menu::g_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
+			menu::g_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
 			CreateRenderTarget();
 		}
 		return 0;

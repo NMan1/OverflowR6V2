@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include <Lmcons.h>
 #include <time.h>
-#include "Config.h"
+#include "config.h"
 
 // Settings
 using namespace g_Settings;
@@ -23,52 +23,8 @@ Config* DefualtCfg;
 Config* LegitCfg;
 Config* RageCfg;
 
-void ResetSettings()
-{
-	// Visual
-	bESP = false;
-	bOutline = false;
-	bTeam = false;
-	bChams = false;
-	bCavEsp = false;
 
-	// Weapon
-	bAimbot = false;
-	bRunShoot = false;
-	bDamage = false;
-	bNoRecoil = false;
-	bSpread = false;
-	bSilent = false;
-
-	// Misc
-	bUnlockAll = false;
-	bNoClip = false;
-	bWepFov = false;
-	bPlayerFov = false;
-	bSpeed = false;
-	bNoFlash = false;
-
-	/* VALUES */
-
-	// Misc
-	fWepFov = .8f;
-	fPlayerFov = 1.f;
-	iSpeed = 100;
-	fSpread = 1.f;
-	iBullet = 1;
-	iSmoothing = 0;
-
-	// Chams
-	fChamsR = 255;
-	fChamsG = 255;
-	fChamsB = 255;
-	fChamsOpp = 3;
-
-	// Aimbot
-	iAimFov = 150;
-}
-
-void Menu::RenderButtons()
+void menu::render_buttons()
 {
 	if (iPage == 0)
 	{
@@ -139,19 +95,19 @@ void Menu::RenderButtons()
 	}
 }
 
-void Bar()
+void bar()
 {
 	ImGui::Spacing(); ImGui::Spacing();
 	ImGui::Separator();
 	ImGui::Spacing(); ImGui::Spacing(); ImGui::Spacing();
 }
 
-void SameLineDummy(int xSpacing)
+void same_line_dummy(int xSpacing)
 {
 	ImGui::SameLine(); Dummy(ImVec2(xSpacing, 0)); ImGui::SameLine();
 }
 
-void Menu::RenderMenu()
+void menu::render_menu()
 {
 	static bool DoOnce = true;
 	if (DoOnce)
