@@ -9,61 +9,21 @@ using namespace g_Settings;
 using namespace g_Cheat;
 
 
-void Setup();
-void AnyRound();
-void Action();
-void Prep_Action();
-void ToggleRage();
-void ToggleLegit();
+void any_round();
+void action_round();
+void prep_round();
 
-static auto Toggle = false; int j = 0; //Flag 
-static bool DoSil = false;  int k = 0; //Flag
-static bool DoNo = false;
-void keys()
+
+void cheat::cheat_thread()
 {
 	while (true)
 	{
-		if (g_Settings::bStartCheat)
+		if (g_Settings::start_cheat)
 		{
-			if (RoundState == 3)
+			cur_round = game::get_round();
+			if (old_round != cur_round)
 			{
-				if (bSilent && (GetAsyncKeyState(iSilentKey) & 0x8000) && (k == 0))
-				{
-					DoSil = true;
-					if (!Toggle)
-					{
-						PlaySound("sound2.wav", NULL, SND_SYNC);
-					}
-					else if (Toggle)
-					{
-						PlaySound("sound1.wav", NULL, SND_SYNC);
-					}
-				}
-				else if (GetAsyncKeyState(iSilentKey) == 0)
-					k = 0;//reset the flag
-
-				if ((GetAsyncKeyState(iNoClip) & 0x8000) && (j == 0))
-					DoNo = true;
-				else if (GetAsyncKeyState(iNoClip) == 0)
-					j = 0; //reset the flag
-			}
-		}
-
-		Sleep(50);
-	}
-}
-
-void cheat::main_cheat()
-{
-	bool DoOnce = true;
-	while (true)
-	{
-		if (g_Settings::bStartCheat)
-		{
-			RoundState = GetCurrentGameMode();
-			if (OldRoundState != RoundState)
-			{
-				switch (RoundState)
+				switch (cur_round)
 				{
 				case 0: Status = "   Round Swap"; break;
 				case 1: Status = "   OP Selection"; break;
@@ -72,53 +32,27 @@ void cheat::main_cheat()
 				case 4: Status = "   End Of Round"; break;
 				case 5: Status = "   Main Menu"; break;
 				}
-
-				if ((OldRoundState == 5 && RoundState == 3) || (OldRoundState == 1 && RoundState == 2))
-				{
-					//Sleep(1500);
-					//Driver.SendMsg(("MNG"));
-					Sleep(2000);
-					SetSettings(false, true, true, true);
-				}
-				OldRoundState = RoundState;
+				old_round = cur_round;
 			}
 
-			if (DoNo)
-			{
-				bNoClip = !bNoClip;
-				if (bNoClip)
-					nC();
-				else //false
-					nC(false);
-				j = 1;
-				DoNo = false;
-			}
-
-			if (RoundState == 5 || RoundState == 3 || RoundState == 2 || RoundState == 1)
+			if (cur_round == 5 || cur_round == 3 || cur_round == 2 || cur_round == 1)
 			{
 				AnyRound();
-			}
 
-			if (RoundState == 2 || RoundState == 3)
-			{
+			if (cur_round == 2 || cur_round == 3)
 				Prep_Action();
-			}
 
-			if (RoundState == 3)
+			if (cur_round == 3)
 			{
 				Action();
 			}
 
 			// End Whole Cheat
-			if (bEnd)
+			if (end)
 			{
-				bCheatThread = true;
+				cheat_thread = true;
 				break;
 			}
-
-			// End UM App
-			if (bEndUM)
-				break;
 
 			Sleep(5);
 		}
@@ -127,117 +61,96 @@ void cheat::main_cheat()
 	return;
 }
 
-void AnyRound()
+void any_round()
 {
-	//if (bUnlockAll && bCanDoUnlockAll)
+	//if (unlock_all && bCanDoUnlockAll)
 	//{
 	//	Driver.SendMsg(("UNALL"));
 	//	bCanDoUnlockAll = false;
 	//}
 
-	//if (bWepFov && bCanDoWepFov)
+	//if (web_fov && bCanDoWepFov)
 	//{
 	//	Driver.SendMsg(("FOVWEP"));
 	//	bCanDoWepFov = false;
 	//}
 
-	//if (bPlayerFov && bCanDoPlayerFov)
+	//if (player_fov && bCanDoPlayerFov)
 	//{
 	//	Driver.SendMsg("FOVCAR");
 	//	bCanDoPlayerFov = false;
 	//}
 }
 
-void Action()
+void action_round()
 {
 	//Cheat::SetSettings(false, true, false, true);
-	//if (bAimbot)
+	//if (aimbot)
 	//{
-	//	while (GetAsyncKeyState(iAimKey) || GetAsyncKeyState(iAimKey2))
+	//	while (GetAsyncKeyState(aim_key) || GetAsyncKeyState(aim_key_2))
 	//	{
-	//		if (bSilent)
+	//		if (silent)
 	//			Driver.StartAimbot(true);
 	//		else
 	//			Driver.StartAimbot(false);
 	//	}
 	//}
 
-	//if (bRunShoot && bCanDoRunShoot)
+	//if (run_shoot && bCanDoRunShoot)
 	//{
 	//	Driver.SendMsg(("RUNSH"));
 	//	bCanDoRunShoot = false;
 	//}
 
-	//if (bColor && bCanDoColor)
+	//if (color && bCanDoColor)
 	//{
 	//	Driver.SendMsg(("COLOR"));
 	//	bCanDoColor = false;
 	//}
 
-	//if (bDamage && bCanDoDmg)
+	//if (damage && bCanDoDmg)
 	//{
 	//	Driver.SendMsg(("DAMAGE"));
 	//	bCanDoDmg = false;
 	//}
 
-	//if (bCavEsp && bCanDoCav)
+	//if (cav_esp && bCanDoCav)
 	//{
 	//	Driver.SendCavRequest();
 	//	bCanDoCav = false;
 	//}
 }
 
-void Prep_Action()
+void prep_round()
 {
-	if (bChams && bCanDoChams)
-	{
-		setGlow();
-		bCanDoChams = false;
-	}
+	if (chams)
+		game::set_glow();
 
-	if (bNoClip && bCanDoNoClip)
-	{
-		nC();
-		bCanDoNoClip = false;
-	}
+	if (no_clip || (no_clip && GetAsyncKeyState(no_clip_key) & 0x8000))
+		game::no_recoil();
 
-	if (bNoFlash && bCanDoNoFlash)
+	if (no_flash)
 	{
 		/*Driver.SendMsg(("FLASH"));*/
 		bCanDoNoFlash = false;
 	}
 
-	if (bSpeed && bCanDoSpeed || (bSpeed && GetAsyncKeyState(VK_SHIFT)))
-	{
-		speedMod();
-		bCanDoSpeed = false;
-	}	
+	if (speed || (speed && GetAsyncKeyState(VK_SHIFT)))
+		game::speed_changer();
 	
-	if (rapid_fire && bCanDoRapidFire)
-	{
-		noShotCooldown();
-		bCanDoRapidFire = false;
-	}
+	if (rapid_fire)
+		game::rapid_fire();
 		
-	if (no_animations && bCanDoinstant_animetiopns)
-	{
-		speedMod();
-		bCanDoinstant_animetiopns = false;
-	}
+	if (no_animations)
+		game::no_animations();
 
-	if (bSpread && bCanDoNS)
-	{
-		nS();
-		bCanDoNS = false;
-	}
+	if (no_spread)
+		game::no_spread();
 
-	if (bNoRecoil && bCanDoNR)
-	{
-		nR();
-		bCanDoNR = false;
-	}
+	if (no_recoil)
+		game::no_recoil();
 
-	//if (bDamage && bCanDoDmg)
+	//if (damage && bCanDoDmg)
 	//{
 	//	Driver.SendMsg(("DAMAGE"));
 	//	Driver.SendMsg(("DAMAGE"));
@@ -251,36 +164,10 @@ void Prep_Action()
 	//	Driver.SendMsg(("SPREAD"));
 	//}
 
-	//if (bCavEsp && bCanDoCav)
+	//if (cav_esp && bCanDoCav)
 	//{
 	//	Sleep(3500);
 	//	Driver.SendCavRequest();
 	//	bCanDoCav = false;
 	//}
-}
-
-void cheat::set_settings(bool Fov, bool Cav, bool Outline, bool Damage)
-{
-	/* Set The Settings To True, Allowing The Functions To Run */
-	if (Cav)
-		bCanDoCav = true;
-
-	if (Outline)
-		bCanDoColor = true;
-
-	bCanDoChams = true;
-	bCanDoNR = true;
-	bCanDoNS = true;
-	bCanDoSpeed = true;
-	bCanDoDmg = true;
-	bCanDoNoFlash = true;
-	bCanDoNoClip = true;
-
-	if (Fov)
-	{
-		bCanDoPlayerFov = true;
-		bCanDoWepFov = true;
-	}
-
-	return;
 }

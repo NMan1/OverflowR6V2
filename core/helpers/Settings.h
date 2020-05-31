@@ -5,7 +5,7 @@
 namespace g_Settings
 {
 	// Login
-	extern bool bStartCheat;
+	extern bool start_cheat;
 	extern bool bPassFailed;
 	extern bool bDisplayLogin;
 	extern bool bLoad;
@@ -15,107 +15,70 @@ namespace g_Settings
 
 
 	// Menu
-	extern bool bMenuOpened;
-	extern bool bUpdateSettings;
+	extern bool menu_opened;
+	extern bool update_settings;
 
 	// Esp
-	extern bool bDraw;
+	extern bool should_draw;
 
 	// Visual
-	extern bool bESP;
-	extern bool bTeam;
-	extern bool bOutline;
-	extern bool bChams;
-	extern bool bCavEsp;
+	extern bool esp;
+	extern bool team;
+	extern bool outline;
+	extern bool chams;
+	extern bool cav_esp;
 
 	// Weapon
-	extern int  iAimSelection;
-	extern int  iAimBone;
-	extern int  iAimKey2;
-	extern int  iAimKey;
-	extern int  iSilentKey;
-	extern bool bAimbot;
-	extern bool bRunShoot;
-	extern bool bDamage;
-	extern bool bNoRecoil;
-	extern bool bSpread;
+	extern int  aim_selection;
+	extern int  aim_bone;
+	extern int  aim_key_2;
+	extern int  aim_key;
+	extern int  silent_key;
+	extern bool aimbot;
+	extern bool run_shoot;
+	extern bool damage;
+	extern bool no_recoil;
+	extern bool no_spread;
 
 	// Misc
-	extern bool bUnlockAll;
-	extern bool bNoClip;
-	extern int iNoClip;
-	extern bool bWepFov;
-	extern bool bPlayerFov;
-	extern bool bSpeed;
-	extern bool bNoFlash;
+	extern bool unlock_all;
+	extern bool no_clip;
+	extern int no_clip_key;
+	extern bool web_fov;
+	extern bool player_fov;
+	extern bool speed;
+	extern bool no_flash;
 	extern bool no_animations;
 	extern bool rapid_fire;
 
 	// Settings
-	extern int  iRageKey;
-	extern int  iLegitKey;
-	extern bool bUpdate;
-	extern bool bReset;
-	extern bool bEnd;
-	extern bool bEndUM;
-	extern bool bCheatThread;
+	extern int  rage_key;
+	extern int  legit_key;
+	extern bool end;
+	extern bool cheat_thread;
 
 	/* VALUES */
 
 	// Misc
-	extern float fSpread;
-	extern float fWepFov;
-	extern float fPlayerFov;
-	extern int   iSpeed;
-	extern float   fValue;
-	extern int  iBullet;
-	extern float fBullet;
+	extern float spread_value;
+	extern float wep_fov_value;
+	extern float player_fov_value;
+	extern int   speed_value;
+	extern float   speed_value_f;
+	extern int  bullet_value;
+	extern float bullet_value_f;
 
 	// Chams
-	extern bool bColor;
-	extern float fChamsR;
-	extern float fChamsG;
-	extern float fChamsB;
-	extern float fChamsOpp;
-	extern float fOpp;
+	extern bool color;
+	extern float chams_r;
+	extern float chams_g;
+	extern float chams_b;
+	extern float chams_oppacity;
+	extern float chams_oppacity_f;
 
 	// Aimbot
-	extern bool bSmoothing;
-	extern bool	 bSilent;
-	extern int	 iAimFov;
-	extern float    iSmoothing;
-}
-
-namespace g_Cheat
-{
-	// Round
-	extern bool bDidRoundChange;
-	extern int  RoundState;
-	extern int  CameraState;
-	extern int  OldRoundState;
-
-	// Helpers
-	extern int MaxEnemys;
-
-	// Visuals
-	extern bool bCanDraw;
-	extern bool bCanDoCav;
-	extern bool bCanDoNoFlash;
-	extern bool bCanDoColor;
-	extern bool bCanDoChams;
-
-	// Weapon
-	extern bool bCanDoNR;
-	extern bool bCanDoRunShoot;
-	extern bool bCanDoNS;
-	extern bool bCanDoDmg;
-
-	// Misc
-	extern bool bCanDoUnlockAll;
-	extern bool bCanDoNoClip;
-	extern bool bCanDoSpeed;
-	extern bool bCanDoWepFov;
-	extern bool bCanDoPlayerFov;
-	extern bool bCanDoRapidFire;
-	extern bool bCanDoinstant_animetiopns;
+	extern bool smoothing;
+	extern bool	 silent;
+	extern int	 aim_fov;
+	extern float    smoothing;
 }

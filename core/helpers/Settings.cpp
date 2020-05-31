@@ -3,94 +3,88 @@
 namespace g_Settings
 {
 	// Login
-	bool bStartCheat = false;
-	bool bPassFailed = false;
-	bool bDisplayLogin = false;
-	bool bLoad = false;
-	int  iTimeLeft = -1;
-	std::string sUsername;
-	std::string sPass;
+	bool start_cheat = false;
 
 	// Menu
-	bool bMenuOpened = true;
-	bool bUpdateSettings = true;
+	bool menu_opened = true;
+	bool update_settings = true;
 
 	// Esp
-	bool bDraw = false;
+	bool should_draw = false;
 
 	// Visual
-	bool bESP = false;
-	bool bOutline = false;
-	bool bTeam = false;
-	bool bChams = false;
-	bool bCavEsp = false;
+	bool esp = false;
+	bool outline = false;
+	bool team = false;
+	bool chams = false;
+	bool cav_esp = false;
 
 	// Weapon
-	int  iAimSelection = 0;
-	int  iAimBone = 0;
-	int  iAimKey2 = 0;
-	int  iAimKey = 0;
-	int  iSilentKey = 0;
-	bool bAimbot = false;
-	bool bRunShoot = false;
-	bool bDamage = false;
-	bool bNoRecoil = false;
-	bool bSpread = false;
+	int  aim_selection = 0;
+	int  aim_bone = 0;
+	int  aim_key_2 = 0;
+	int  aim_key = 0;
+	int  silent_key = 0;
+	bool aimbot = false;
+	bool run_shoot = false;
+	bool damage = false;
+	bool no_recoil = false;
+	bool no_spread = false;
 
 	// Misc
-	bool bUnlockAll = false;
-	int  iNoClip = 0;
-	bool bNoClip = false;
-	bool bWepFov = false;
-	bool bPlayerFov = false;
-	bool bSpeed = false;
-	bool bNoFlash = false;
+	bool unlock_all = false;
+	int  no_clip_key = 0;
+	bool no_clip = false;
+	bool web_fov = false;
+	bool player_fov = false;
+	bool speed = false;
+	bool no_flash = false;
 	bool no_animations = false;
 
 	// Settings
-	int  iRageKey = 0;
-	int  iLegitKey = 0;
+	int  rage_key = 0;
+	int  legit_key = 0;
 
 	bool bUpdate = false;
 	bool bReset = false;
-	bool bEnd = false;
-	bool bEndUM = false;
-	bool bCheatThread = false;
+	bool end = false;
+	bool endUM = false;
+	bool cheat_thread = false;
 
 	/* VALUES */
 
 	// Misc
-	float fSpread = 1.f;
-	float fWepFov = 1.4;
-	float fPlayerFov = 1.4;
-	int   iSpeed = 100;
-	float fValue = 1;
-	int  iBullet = 1;
-	float fBullet = 1;
+	float spread_value = 1.f;
+	float wep_fov_value = 1.4;
+	float player_fov_value = 1.4;
+	int   speed_value = 100;
+	float speed_value_f = 1;
+	int  bullet_value = 1;
+	float bullet_value_f = 1;
 
 	// Chams
-	bool bColor = false;
-	float fChamsR = 255;
-	float fChamsG = 5;
-	float fChamsB = 5;
-	float fChamsOpp = -3;
-	float fOpp = 3;
+	bool color = false;
+	float chams_r = 255;
+	float chams_g = 5;
+	float chams_b = 5;
+	float chams_oppacity = -3;
+	float chams_oppacity_f = 3;
 
 	// Aimbot
-	bool	 bSmoothing = false;
+	bool	 smoothing = false;
 	bool	 rapid_fire = false;
-	bool	 bSilent = false;
-	int      iAimFov = 150;
-	float    iSmoothing = 0;
+	bool	 silent = false;
+	int      aim_fov = 150;
+	float    smoothing = 0;
 }
 
 namespace g_Cheat
 {
 	// Round
 	bool bDidRoundChange = false;
-	int  RoundState = -1;
+	int  cur_round = -1;
 	int  CameraState = -1;
-	int  OldRoundState = -1;
+	int  old_round = -1;
 
 	// Helpers
 	int MaxEnemys = 1;

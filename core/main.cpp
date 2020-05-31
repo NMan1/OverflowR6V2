@@ -15,12 +15,12 @@ int main()
 	get_process_id("RainbowSix");
 	base_address = get_module_base_address("RainbowSix.exe");
 	
-	std::thread KeysLoop(Keys);
-	std::thread DoCheat(Cheat::MainCheat);
+	std::thread keys_loop(Keys);
+	std::thread do_cheat(cheat::main_cheat);
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
-	menu::SetupMenu();
+	menu::setup_menu();
 	while (true)
 	{
 		// Setup Input
