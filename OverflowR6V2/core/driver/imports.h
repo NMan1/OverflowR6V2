@@ -6,8 +6,8 @@
 #include <TlHelp32.h>
 #include <cstdint>
 #include <vector>
-#include "Vectors.h"
-#include "offsets.h"
+#include "../helpers/vectors.h"
+#include "../game/offsets.h"
 #include <random>
 #include <memoryapi.h>
 #include <string>

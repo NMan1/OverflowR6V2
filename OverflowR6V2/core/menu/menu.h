@@ -1,21 +1,20 @@
 #pragma once
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"  // really dx9 just to lazy to rename xDDD
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"  // really dx9 just to lazy to rename xDDD
 #include <d3d11.h>
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <tchar.h>
 #include <string>
-#include "vectors.h"
+#include "../helpers/vectors.h"
 #pragma comment(lib, "d3d11.lib") 
 
-extern std::string Status;
 extern int PasswordAttempt;
 
 using namespace ImGui;
 
-extern std::string Status;
+extern std::string status;
 namespace menu
 {
 	/* DirectX Pointers */
@@ -46,8 +45,6 @@ namespace menu
 	/* Handle*/
 	extern WNDCLASSEX wc;
 	extern HWND hwnd;
-	extern bool bDisplayAdmin;
-
 
 	/* Functions */
 	void begin_draw();
@@ -59,7 +56,4 @@ namespace menu
 
 	void init();
 	void setup_menu();
-
-	extern LPCTSTR Logo;
-	extern ID3D11ShaderResourceView* LogoTexture;
 }

@@ -1,22 +1,17 @@
 #include <string>
-#include <iostream>
-#include "menu.h"
-#include "Settings.h"
 #include <thread>
 #include <dwmapi.h>
-#include "imgui_internal.h"
+#include <iostream>
 #include <ShlObj.h>
+#include "menu.h"
+#include "../helpers/settings.h"
+#include "imgui/imgui_internal.h"
+
 #pragma comment(lib, "dwmapi.lib")
 #define STB_IMAGE_IMPLEMENTATION
 
 using namespace ImGui;
-using namespace g_Settings;
-
-// Names
-std::string Status;
-int	PasswordAttempt = 0;
-
-//menu::Logo = "D:\\Everything\\BigPCheatLogo.png";
+using namespace settings;
 
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
@@ -25,6 +20,7 @@ void CreateRenderTarget();
 void CleanupRenderTarget();
 ImVec4 clear_color;
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+std::string status = {};
 
 namespace menu
 {
@@ -70,7 +66,7 @@ void menu::init()
 
 	/* Setup Style */
 	ImGuiStyle& style = GetStyle();
-	Status = " Rainbow Six Seige";
+	status = " Rainbow Six Seige";
 
 	style.Alpha = 1.f;
 	style.WindowPadding = ImVec2(8, 8);
@@ -188,7 +184,7 @@ void menu::setup_menu()
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
 	// Colors
-	Init();
+	init();
 
 	// Our state
 	bool show_demo_window = true;

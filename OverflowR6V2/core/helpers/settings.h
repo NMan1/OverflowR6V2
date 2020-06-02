@@ -2,17 +2,10 @@
 #include <string>
 #include <d3d9.h>
 
-namespace g_Settings
+namespace settings
 {
 	// Login
 	extern bool start_cheat;
-	extern bool bPassFailed;
-	extern bool bDisplayLogin;
-	extern bool bLoad;
-	extern int  iTimeLeft;
-	extern std::string sUsername;
-	extern std::string sPass;
-
 
 	// Menu
 	extern bool menu_opened;
@@ -44,7 +37,7 @@ namespace g_Settings
 	extern bool unlock_all;
 	extern bool no_clip;
 	extern int no_clip_key;
-	extern bool web_fov;
+	extern bool wep_fov;
 	extern bool player_fov;
 	extern bool speed;
 	extern bool no_flash;
@@ -70,6 +63,7 @@ namespace g_Settings
 
 	// Chams
 	extern bool color;
+	extern bool rainbow_chams;
 	extern float chams_r;
 	extern float chams_g;
 	extern float chams_b;
@@ -80,5 +74,5 @@ namespace g_Settings
 	extern bool smoothing;
 	extern bool	 silent;
 	extern int	 aim_fov;
-	extern float    smoothing;
+	extern float smoothing_value;
 }

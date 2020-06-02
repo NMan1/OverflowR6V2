@@ -1,6 +1,6 @@
 #include "Settings.h"
 
-namespace g_Settings
+namespace settings
 {
 	// Login
 	bool start_cheat = false;
@@ -35,7 +35,7 @@ namespace g_Settings
 	bool unlock_all = false;
 	int  no_clip_key = 0;
 	bool no_clip = false;
-	bool web_fov = false;
+	bool wep_fov = false;
 	bool player_fov = false;
 	bool speed = false;
 	bool no_flash = false;
@@ -64,6 +64,7 @@ namespace g_Settings
 
 	// Chams
 	bool color = false;
+	bool rainbow_chams = false;
 	float chams_r = 255;
 	float chams_g = 5;
 	float chams_b = 5;
@@ -75,42 +76,5 @@ namespace g_Settings
 	bool	 rapid_fire = false;
 	bool	 silent = false;
 	int      aim_fov = 150;
-	float    smoothing = 0;
-}
-
-namespace g_Cheat
-{
-	// Round
-	bool bDidRoundChange = false;
-	int  cur_round = -1;
-	int  CameraState = -1;
-	int  old_round = -1;
-
-	// Helpers
-	int MaxEnemys = 1;
-
-	// Visuals
-	bool bCanDraw = false;
-	bool bCanDoCav = true;
-	bool bCanDoNoFlash = true;
-	bool bCanDoOutline = true;
-	bool bCanDoChams = true;
-	bool bCanDoColor = true;
-	bool bCanDoPlayerFov = false;
-
-	// Weapon
-	bool bCanDoRunShoot = true;
-	bool bCanDoNR = true;
-	bool bCanDoNS = true;
-	bool bCanDoDmg = true;
-
-	// Misc
-	bool bCanDoUnlockAll = true;
-	bool bCanDoNoClip = true;
-	bool bCanDoSpeed = true;
-	bool bCanDoWepFov = true;
-	bool bCanDoRapidFire = true;
-	bool bCanDoinstant_animetiopns = true;
-
-	// Settings
+	float    smoothing_value = 0;
 }
