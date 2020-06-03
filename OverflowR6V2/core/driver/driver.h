@@ -112,10 +112,11 @@ namespace driver
 		m.get_base = FALSE;
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
+		m.output = &response;
 
 		call_hook(&m);
 
-		return *(T*)&m.output;
+		return response;
 	}
 
 	static bool WriteVirtualMemoryRaw(UINT_PTR WriteAddress, UINT_PTR SourceAddress, SIZE_T WriteSize);

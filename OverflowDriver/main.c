@@ -53,9 +53,7 @@ NTSTATUS hookedfunc(PVOID called_param)
 	}
 	else if (m->read != FALSE)
 	{
-		void* ReadOutput = NULL;
-		read_kernel_memory((HANDLE)pid, m->address, &ReadOutput, m->size);
-		m->output = ReadOutput;
+		read_kernel_memory((HANDLE)pid, m->address, m->output, m->size);
 	}
 	else if (m->read_string != FALSE) 
 	{

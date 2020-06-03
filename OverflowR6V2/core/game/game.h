@@ -3,6 +3,7 @@
 #include "../helpers/settings.h"
 
 extern DWORD64 base_address;
+enum bone { BONE_HEAD = 0x6B0, BONE_NECK = 0xF70, BONE_CHEST = 0xFB0, BONE_STOMACH = 0xF90, BONE_PELVIS = 0xFD0, BONE_RIGHTHAND = 0x6A0, BONE_FEET = 0x700 };
 
 namespace game
 {
@@ -14,13 +15,40 @@ namespace game
 		return driver::read<uintptr_t>(local_player + 0x28);
 	}	
 
+	static vec3_t get_bone(uintptr_t entity)
+	{
+		auto bone = 0;
+		if (settings::aim_bone == 1)
+			bone = BONE_HEAD;
+		else if (settings::aim_bone == 2)
+			bone = BONE_NECK;
+		else if (settings::aim_bone == 3)
+			bone = BONE_CHEST;
+		else if (settings::aim_bone == 4)
+			bone = BONE_STOMACH;
+		else if (settings::aim_bone == 5)
+			bone = BONE_PELVIS;
+		else if (settings::aim_bone == 6)
+			bone = BONE_RIGHTHAND;
+		else if (settings::aim_bone == 7)
+			bone = BONE_FEET;
+
+		uintptr_t skeleton = driver::read<uintptr_t>(entity + 0x20);
+		return driver::read<vec3_t>(skeleton + bone);
+	}
+
 	static bool is_enemy(uintptr_t enemy)
 	{
 		auto team_enemy = driver::read<uintptr_t>(enemy + 0xc8);
-		team_enemy = driver::read<byte>(team_enemy + 0x1A2);
+		team_enemy = driver::read<unsigned long>(team_enemy + 0x1A2);
 
 		auto team_local = driver::read<uintptr_t>(get_local() + 0xc8);
-		team_local = driver::read<byte>(team_local + 0x1A2);
+		team_local = driver::read<unsigned long>(team_local + 0x1A2);
+
+		if (!team_enemy)
+			team_enemy = 0xFF;
+		if (!team_local)
+			team_local = 0xFF;
 
 		return team_enemy != team_local;
 	}
@@ -199,20 +227,11 @@ namespace game
 
 		*(UINT_PTR*)(&shell[0x7]) = driver::read <uintptr_t>(base_address + 0x5AFF3F0);
 		*(UINT_PTR*)(&shell[0x22]) = base_address;
-		std::cout << "1" << std::endl;
-		Sleep(3000);
 
 		driver::write(allocted_memory, shell);
-		std::cout << "2" << std::endl;
-		Sleep(3000);
-
 		driver::change_protection(base_address + 0x5AFF3F0, PAGE_EXECUTE_READWRITE, sizeof(uintptr_t));
-		std::cout << "3" << std::endl;
-		Sleep(3000);
 		driver::write(base_address + 0x5AFF3F0, allocted_memory);
-		std::cout << "4" << std::endl;
-		Sleep(3000);
-		//driver::change_protection(base_address + 0x5AFF3F0, PAGE_READONLY, sizeof(uintptr_t));
+		driver::change_protection(base_address + 0x5AFF3F0, PAGE_READONLY, sizeof(uintptr_t));
 
 		do_once = false;
 		return true;

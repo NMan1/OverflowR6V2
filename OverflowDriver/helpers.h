@@ -205,19 +205,21 @@ BOOLEAN call_kernel_function(void* kernel_function_address, LPCSTR funct_name) {
 		0x90,
 		0x90,
 		0x90, // nop
+		0x48, 0xB8, // mov rax, 
+		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // [xxx]
 		//0x48, 0x81, 0xec, 0x40, 0x01, 0x00, 0x00, // sub rsp, 140h
 		0x90,
 		0x48, 0xB8, // mov rax, 
 		0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // [xxx]
 		//0x48, 0x8B, 0xF1, // mov rsi, rcx
-		0xFF, 0xE0, // jmp rax
+		0xFF, 0xE0, // jmp rax // d0 for call
 		0xCC, // int3
 	};
 
 	DbgPrintEx(0, 0, "\nFunction: %p\n", function);
 	DbgPrintEx(0, 0, "Our function: %p\n", our_func);
 
-	memcpy(shell_code + 6, &our_func, sizeof(our_func));
+	memcpy(shell_code + 16, &our_func, sizeof(our_func)); // 6
 	write_to_read_only_memory(function, &shell_code, sizeof(shell_code));
 
 	return TRUE;

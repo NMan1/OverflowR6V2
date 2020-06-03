@@ -3,6 +3,7 @@
 #include "../helpers/settings.h"
 #include "../menu/menu.h"
 #include "game.h"
+#include "aimbot.h"
 //#pragma comment(lib, "winmm.lib")
 
 void features();
@@ -18,17 +19,16 @@ void cheat::cheat_thread()
 		if (settings::unlock_all)
 			game::unlock_all();
 
-		if (cur_round == 4)
+		if (cur_round == 4 || cur_round == 2 || cur_round == 5)
 			features();
 
-		// End Whole Cheat
 		if (settings::end)
 		{
 			settings::cheat_thread = true;
 			break;
 		}
 
-		Sleep(5);
+		Sleep(1);
 	}
 
 	return;
@@ -36,6 +36,9 @@ void cheat::cheat_thread()
 
 void features()
 {
+	if (settings::aimbot && GetAsyncKeyState(settings::aim_key))
+		game::run_aimbot();
+	
 	if (settings::chams)
 		game::set_glow();
 
@@ -65,15 +68,4 @@ void features()
 
 	if (settings::cav_esp)
 		game::cav_esp();
-
-	//if (aimbot)
-//{
-//	while (GetAsyncKeyState(aim_key) || GetAsyncKeyState(aim_key_2))
-//	{
-//		if (silent)
-//			Driver.StartAimbot(true);
-//		else
-//			Driver.StartAimbot(false);
-//	}
-//}
 }

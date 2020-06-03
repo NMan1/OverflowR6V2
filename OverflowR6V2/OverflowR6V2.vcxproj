@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="core\driver\driver.h" />
     <ClInclude Include="core\driver\imports.h" />
+    <ClInclude Include="core\game\aimbot.h" />
     <ClInclude Include="core\game\cheat.h" />
     <ClInclude Include="core\game\game.h" />
     <ClInclude Include="core\game\offsets.h" />

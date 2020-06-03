@@ -69,6 +69,9 @@
     <ClInclude Include="core\game\cheat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\game\aimbot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\menu\gui.cpp">

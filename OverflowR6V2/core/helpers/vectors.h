@@ -76,6 +76,13 @@ public:
 	vec3_t operator*(float number) const {
 		return vec3_t(x * number, y * number, z * number);
 	}
+	
+	vec3_t& operator/=(float fl) {
+		x /= fl;
+		y /= fl;
+		z /= fl;
+		return *this;
+	}
 
 	vec3_t& operator-=(const vec3_t& v)
 	{
