@@ -4,6 +4,16 @@
 
 #define M_PI	3.14159265358979323846264338327950288419716939937510
 
+template <typename t> static  t clamp_value(t value, t min, t max) {
+	if (value > max) {
+		return max;
+	}
+	if (value < min) {
+		return min;
+	}
+	return value;
+}
+
 //vec_t
 class vec_t
 {

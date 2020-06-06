@@ -36,10 +36,16 @@
     <ClInclude Include="core\helpers\vectors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\menu\config.h">
+    <ClInclude Include="core\menu\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\menu\menu.h">
+    <ClInclude Include="core\helpers\settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\game\cheat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\game\aimbot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\menu\imgui\imgui.h">
@@ -63,24 +69,27 @@
     <ClInclude Include="core\menu\imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\helpers\settings.h">
+    <ClInclude Include="core\menu\helpers\color.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\game\cheat.h">
+    <ClInclude Include="core\renderer\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\game\aimbot.h">
+    <ClInclude Include="core\game\esp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="core\menu\gui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="core\menu\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\helpers\settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\game\cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\menu\imgui\imgui.cpp">
@@ -98,10 +107,25 @@
     <ClCompile Include="core\menu\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\helpers\settings.cpp">
+    <ClCompile Include="core\menu\gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\game\cheat.cpp">
+    <ClCompile Include="core\menu\tabs\legit_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\tabs\misc_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\tabs\rage_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\tabs\settings_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\tabs\skins_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\menu\tabs\visuals_tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

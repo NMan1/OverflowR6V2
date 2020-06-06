@@ -35,6 +35,22 @@ namespace game
 
 		uintptr_t skeleton = driver::read<uintptr_t>(entity + 0x20);
 		return driver::read<vec3_t>(skeleton + bone);
+	}	
+
+	static vec3_t get_bone(uintptr_t entity, int bone, bool head_top=false)
+	{
+		uintptr_t skeleton = driver::read<uintptr_t>(entity + 0x20);
+		auto bone_pos = driver::read<vec3_t>(skeleton + bone);
+		head_top ? bone_pos.z += .2 : true;
+		return bone_pos;
+	}	
+	
+	static int get_health(uintptr_t entity)
+	{
+		auto health = driver::read<uint64_t>(entity + 0x28);
+		health = driver::read<uint64_t>(health + 0xd8);
+		health = driver::read<uint64_t>(health + 0x8);
+		return driver::read<int>(health + 0x168);
 	}
 
 	static bool is_enemy(uintptr_t enemy)
@@ -53,10 +69,10 @@ namespace game
 		return team_enemy != team_local;
 	}
 
-	static uintptr_t get_round()
+	static int get_round()
 	{
 		uintptr_t round = driver::read<uintptr_t>(base_address + round_off);
-		return driver::read<uintptr_t>(round + 0x230);
+		return driver::read<int>(round + 0x2e8);
 	}
 
 	static auto rainbow() //proper rainbow
@@ -196,8 +212,19 @@ namespace game
 
 		driver::write<float>(player_fov + 0x38, settings::player_fov_value);
 		return true;
-	}
+	}	
 
+	static float get_player_fov()
+	{
+		uintptr_t player_fov = driver::read<uintptr_t>(base_address + fov_off);
+		player_fov = driver::read<uintptr_t>(player_fov + 0x28);
+		player_fov = driver::read<uintptr_t>(player_fov);
+
+		if (!player_fov)
+			return false;
+
+		return driver::read<float>(player_fov + 0x38);
+	}
 
 	static bool unlock_all() 
 	{
@@ -211,11 +238,11 @@ namespace game
 		unsigned char shell [89] = {
 			0x53, 0x48, 0x83, 0xEC, 0x20, 0x48, 0xB8, 0x00,
 			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF,
-			0xD0, 0x48, 0x8D, 0x54, 0x24, 0x28, 0x48, 0x89, //
+			0xD0, 0x48, 0x8D, 0x54, 0x24, 0x28, 0x48, 0x89,
 			0xC3, 0x48, 0x8B, 0x42, 0x30, 0x48, 0x89, 0xC1,
 			0x48, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 			0x00, 0x00, 0x48, 0x29, 0xC1, 0x48, 0x81, 0xF9,
-			0xD1, 0xD5, 0xE0, 0x00, 0x75, 0x1A, 0x48, 0x8B,
+			0xD1, 0x0A, 0xA2, 0x01, 0x75, 0x1A, 0x48, 0x8B,
 			0x42, 0x30, 0x48, 0x8D, 0x48, 0x68, 0x48, 0x89,
 			0x4A, 0x30, 0x48, 0x89, 0xF8, 0xC6, 0x40, 0x52,
 			0x00, 0x48, 0x89, 0xF8, 0xC6, 0x40, 0x51, 0x00,
@@ -225,13 +252,13 @@ namespace game
 
 		uintptr_t allocted_memory = driver::virtual_alloc(0, PAGE_EXECUTE_READWRITE, 0x1000);
 
-		*(UINT_PTR*)(&shell[0x7]) = driver::read <uintptr_t>(base_address + 0x5AFF3F0);
+		*(UINT_PTR*)(&shell[0x7]) = driver::read <uintptr_t>(base_address + 0x5AE06F0);
 		*(UINT_PTR*)(&shell[0x22]) = base_address;
 
 		driver::write(allocted_memory, shell);
-		driver::change_protection(base_address + 0x5AFF3F0, PAGE_EXECUTE_READWRITE, sizeof(uintptr_t));
-		driver::write(base_address + 0x5AFF3F0, allocted_memory);
-		driver::change_protection(base_address + 0x5AFF3F0, PAGE_READONLY, sizeof(uintptr_t));
+		driver::change_protection(base_address + 0x5AE06F0, PAGE_EXECUTE_READWRITE, sizeof(uintptr_t));
+		driver::write(base_address + 0x5AE06F0, allocted_memory);
+		driver::change_protection(base_address + 0x5AE06F0, PAGE_READONLY, sizeof(uintptr_t));
 
 		do_once = false;
 		return true;
@@ -248,7 +275,7 @@ namespace game
 
 		if (settings::chams)
 		{
-			driver::write(glow + 0xD0, settings::rainbow_chams ? rainbow() : vec3_t(settings::chams_r, settings::chams_g, settings::chams_b));
+			driver::write(glow + 0xD0, settings::rainbow_chams ? rainbow() : vec3_t(settings::chams_clr.r, settings::chams_clr.g, settings::chams_clr.b));
 			driver::write<vec_t>(glow + 0x110, { 0, 0 });
 			driver::write<float>(glow + 0x11c, settings::rainbow_chams ? strength : settings::chams_oppacity);
 		}
@@ -265,7 +292,7 @@ namespace game
 	{
 		BYTE spotted = settings::cav_esp;
 
-		uintptr_t game_manager = driver::read<uintptr_t>(base_address + game_off);
+		static uintptr_t game_manager = driver::read<uintptr_t>(base_address + game_off);
 		if (!game_manager)
 			return NULL;
 

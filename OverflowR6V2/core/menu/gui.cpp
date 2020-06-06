@@ -151,7 +151,7 @@ void menu::setup_menu()
 	// Create application window
 	wc = { sizeof(WNDCLASSEX), NULL, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, ("Overflow"), NULL };
 	::RegisterClassEx(&wc);
-	hwnd = ::CreateWindow(wc.lpszClassName, _T(("Overflow  -  Rainbow 6 Seige")), 0, 1100, 300, 412, 450, NULL, NULL, wc.hInstance, NULL);
+	hwnd = ::CreateWindow(wc.lpszClassName, (("Overflow  -  Rainbow 6 Seige")), 0, 1100, 300, 412, 450, NULL, NULL, wc.hInstance, NULL);
 
 	// Initialize Direct3D
 	if (!CreateDeviceD3D(hwnd))

@@ -27,6 +27,12 @@ typedef struct _copy_memory
 	BOOLEAN		change_protection;
 	ULONG		protection;
 	ULONG		protection_old;
+
+	BOOLEAN get_thread_context;
+	BOOLEAN set_thread_context;
+
+	HWND window_handle;
+	UINT_PTR thread_context;
 }copy_memory;
 
 template<typename ... A>
@@ -52,6 +58,8 @@ namespace driver
 		m.write_string = FALSE;
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
+		m.get_thread_context = FALSE;
+		m.set_thread_context =  FALSE;
 		call_hook(&m);
 	}
 
@@ -70,7 +78,8 @@ namespace driver
 		m.write_string = FALSE;
 		m.alloc_memory = FALSE;
 		m.protection_old = 0;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 		return m.protection_old;
 	}
@@ -88,6 +97,8 @@ namespace driver
 		m.module_name = module_name;
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 
 		ULONG64 base = NULL;
@@ -113,7 +124,8 @@ namespace driver
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
 		m.output = &response;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 
 		return response;
@@ -141,7 +153,8 @@ namespace driver
 		m.buffer_address = (void*)SourceAddress;
 		m.size = WriteSize;
 		m.alloc_memory = FALSE;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 
 		return true;
@@ -161,7 +174,8 @@ namespace driver
 		m.size = size;
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 	}
 
@@ -179,7 +193,8 @@ namespace driver
 		m.size = size;
 		m.change_protection = FALSE;
 		m.alloc_memory = FALSE;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 	}
 
@@ -197,8 +212,49 @@ namespace driver
 		m.alloc_memory = TRUE;
 		m.alloc_type = alloc_type;
 		m.size = size;
-
+		m.get_thread_context = FALSE;
+		m.set_thread_context = FALSE;
 		call_hook(&m);
 		return *(UINT_PTR*)&m.output;
+	}	
+	
+	static void get_thread(HWND window_handle, uint64_t* thread_context)
+	{
+		copy_memory m;
+		m.read = FALSE;
+		m.get_pid = FALSE;
+		m.read_string = FALSE;
+		m.write_string = FALSE;
+		m.write = FALSE;
+		m.get_base = FALSE;
+		m.change_protection = FALSE;
+		m.alloc_memory = FALSE;
+		m.get_thread_context = TRUE;
+		m.set_thread_context = FALSE;
+
+		m.window_handle = window_handle;
+
+		call_hook(&m);
+		*thread_context = *(UINT_PTR*)&m.output;
+	}	
+
+	static void set_thread(HWND window_handle, uint64_t thread_context)
+	{
+		copy_memory m;
+		m.read = FALSE;
+		m.get_pid = FALSE;
+		m.read_string = FALSE;
+		m.write_string = FALSE;
+		m.write = FALSE;
+		m.get_base = FALSE;
+		m.change_protection = FALSE;
+		m.alloc_memory = FALSE;
+		m.get_thread_context = FALSE;
+		m.set_thread_context = TRUE;
+
+		m.window_handle = window_handle;
+		m.thread_context = thread_context;
+
+		call_hook(&m);
 	}
 }

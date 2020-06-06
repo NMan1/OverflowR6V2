@@ -23,11 +23,12 @@
     <ClInclude Include="core\driver\imports.h" />
     <ClInclude Include="core\game\aimbot.h" />
     <ClInclude Include="core\game\cheat.h" />
+    <ClInclude Include="core\game\esp.h" />
     <ClInclude Include="core\game\game.h" />
     <ClInclude Include="core\game\offsets.h" />
     <ClInclude Include="core\helpers\settings.h" />
     <ClInclude Include="core\helpers\vectors.h" />
-    <ClInclude Include="core\menu\config.h" />
+    <ClInclude Include="core\menu\helpers\color.hpp" />
     <ClInclude Include="core\menu\imgui\imgui.h" />
     <ClInclude Include="core\menu\imgui\imgui_impl_dx11.h" />
     <ClInclude Include="core\menu\imgui\imgui_impl_win32.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="core\menu\imgui\imstb_textedit.h" />
     <ClInclude Include="core\menu\imgui\imstb_truetype.h" />
     <ClInclude Include="core\menu\menu.h" />
+    <ClInclude Include="core\renderer\renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\game\cheat.cpp" />
@@ -48,6 +50,12 @@
     <ClCompile Include="core\menu\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="core\menu\imgui\imgui_widgets.cpp" />
     <ClCompile Include="core\menu\menu.cpp" />
+    <ClCompile Include="core\menu\tabs\legit_tab.cpp" />
+    <ClCompile Include="core\menu\tabs\misc_tab.cpp" />
+    <ClCompile Include="core\menu\tabs\rage_tab.cpp" />
+    <ClCompile Include="core\menu\tabs\settings_tab.cpp" />
+    <ClCompile Include="core\menu\tabs\skins_tab.cpp" />
+    <ClCompile Include="core\menu\tabs\visuals_tab.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -160,7 +168,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;IMGUI_DEFINE_MATH_OPERATORS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

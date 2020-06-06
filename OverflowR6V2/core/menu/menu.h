@@ -1,20 +1,18 @@
 #pragma once
+#include <dxgi.h>
+#include <d3d11.h>
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"  // really dx9 just to lazy to rename xDDD
-#include <d3d11.h>
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-#include <tchar.h>
-#include <string>
+#include "imgui/imgui_impl_dx11.h" 
+#include "imgui/imgui_internal.h"
+#include "helpers/color.hpp"
 #include "../helpers/vectors.h"
-#pragma comment(lib, "d3d11.lib") 
-
-extern int PasswordAttempt;
+#include "../driver/driver.h"
+#include "../helpers/settings.h"
 
 using namespace ImGui;
 
-extern std::string status;
 namespace menu
 {
 	/* DirectX Pointers */
@@ -45,15 +43,34 @@ namespace menu
 	/* Handle*/
 	extern WNDCLASSEX wc;
 	extern HWND hwnd;
+	void render_menu();
 
-	/* Functions */
-	void begin_draw();
-	void end_draw();
+	void change_log();
+
+	void legit_tab();
+
+	void rage_tab();
+
+	void visuals_tab();
+
+	void misc_tab();
+
+	void skins_tab();
+
+	void settings_tab(); 
 
 	void render_buttons();
-	void render_menu();
-	void menu_shutdown();
 
-	void init();
-	void setup_menu();
-}
+	void render_menu();
+
+    void init();
+
+    void menu_shutdown();
+
+    void begin_draw();
+
+    void end_draw();
+
+    void setup_menu();
+
+};

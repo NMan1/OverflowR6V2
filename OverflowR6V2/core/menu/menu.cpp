@@ -2,7 +2,7 @@
 #include <time.h>
 #include "menu.h"
 #include "../helpers/settings.h"
-#include "config.h"
+#include "imgui/imgui_internal.h"
 
 // Settings
 using namespace settings;
@@ -13,15 +13,6 @@ bool Close = false;
 
 const char* SelectionType[] = { ("Closest FOV") };
 const char* BoneType[] = { ("Closest Bone"), ("Head"), ("Neck"), ("Chest"), ("Stomach"), ("Pelvis"), ("Hand"), ("Feet") };
-const char* ConfigList[] = { "Default", "Legit", "Rage" };
-int iCurrentConfig;
-
-char pConfigName[12]{  };
-static auto flags2 = ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_EnterReturnsTrue;
-
-Config* DefualtCfg;
-Config* LegitCfg;
-Config* RageCfg;
 
 
 void menu::render_buttons()
@@ -109,18 +100,6 @@ void same_line_dummy(int xSpacing)
 
 void menu::render_menu()
 {
-	static bool DoOnce = true;
-	if (DoOnce)
-	{
-		DefualtCfg = new Config("Defualt.cfg");
-		LegitCfg = new Config("Legit.cfg");
-		RageCfg = new Config("Rage.cfg");
-
-		SetConfig(DefualtCfg);
-
-		DoOnce = false;
-	}
-
 	// Style
 	auto& style = GetStyle();
 
@@ -139,10 +118,10 @@ void menu::render_menu()
 
 		// Tilte
 		PushFont(Font18);
-		ImGui::Text(("Overflow    -"));
+		ImGui::Text(("Overflow    -    "));
 		ImGui::SameLine();
 		PushStyleColor(ImGuiCol_Text, TabTitleText);
-		ImGui::Text(status.c_str());
+		ImGui::Text("Rainbow Six");
 		PopStyleColor();
 		ImGui::PopFont();
 
@@ -166,7 +145,6 @@ void menu::render_menu()
 				same_line_dummy(60);
 				Checkbox(("Player Chams"), &chams);
 				ImGui::Spacing();
-				Checkbox(("Outline Color      "), &color);
 				same_line_dummy(60);
 				Checkbox(("Rainbow"), &rainbow_chams);
 
@@ -174,15 +152,15 @@ void menu::render_menu()
 
 				ImGui::Text(("Chams Red"));
 				ImGui::SetCursorPosX(25);
-				SliderFloat(("##  #  "), &settings::chams_r, 0, 255, ("%.0f"));
+				SliderFloat(("##  #  "), &settings::chams_clr.r, 0, 255, ("%.0f"));
 				ImGui::Spacing(); ImGui::Spacing();
 				ImGui::Text(("Chams Green"));
 				ImGui::SetCursorPosX(25);
-				SliderFloat(("##  "), &settings::chams_g, 0, 255, ("%.0f"));
+				SliderFloat(("##  "), &settings::chams_clr.g, 0, 255, ("%.0f"));
 				ImGui::Spacing(); ImGui::Spacing();
 				ImGui::Text(("Chams Blue"));
 				ImGui::SetCursorPosX(25);
-				SliderFloat(("####  "), &settings::chams_b, 0, 255, ("%.0f"));
+				SliderFloat(("####  "), &settings::chams_clr.b, 0, 255, ("%.0f"));
 				ImGui::Spacing(); ImGui::Spacing();
 				ImGui::Text(("Chams Brightness"));
 				ImGui::SetCursorPosX(25);
@@ -302,7 +280,7 @@ void menu::render_menu()
 				ImGui::Text(("Configs                                   Toggle Silent:"));
 				ImGui::PushItemWidth(144);
 				ImGui::SetCursorPosX(25);
-				Combo(("###    "), &iCurrentConfig, ConfigList, IM_ARRAYSIZE(ConfigList));
+				/*Combo(("###    "), &iCurrentConfig, ConfigList, IM_ARRAYSIZE(ConfigList));
 
 				same_line_dummy(25);
 				HotKey(("  "), &silent_key, Font16);
@@ -329,7 +307,7 @@ void menu::render_menu()
 					case 1: SetConfig(LegitCfg); break;
 					case 2: SetConfig(RageCfg); break;
 					}
-				}
+				}*/
 
 				bar();
 

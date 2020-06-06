@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <d3d9.h>
+#include "../menu/helpers/color.hpp"
 
 namespace settings
 {
@@ -62,11 +63,8 @@ namespace settings
 	extern float bullet_value_f;
 
 	// Chams
-	extern bool color;
 	extern bool rainbow_chams;
-	extern float chams_r;
-	extern float chams_g;
-	extern float chams_b;
+	extern clr chams_clr;
 	extern float chams_oppacity;
 	extern float chams_oppacity_f;
 

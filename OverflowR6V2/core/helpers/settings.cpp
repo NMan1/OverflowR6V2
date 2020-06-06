@@ -2,15 +2,9 @@
 
 namespace settings
 {
-	// Login
-	bool start_cheat = false;
-
 	// Menu
 	bool menu_opened = true;
 	bool update_settings = true;
-
-	// Esp
-	bool should_draw = false;
 
 	// Visual
 	bool esp = false;
@@ -63,11 +57,8 @@ namespace settings
 	float bullet_value_f = 1;
 
 	// Chams
-	bool color = false;
 	bool rainbow_chams = false;
-	float chams_r = 255;
-	float chams_g = 5;
-	float chams_b = 5;
+	clr chams_clr = {};
 	float chams_oppacity = -3;
 	float chams_oppacity_f = 3;
 

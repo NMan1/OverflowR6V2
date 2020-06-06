@@ -7,6 +7,7 @@
 //#pragma comment(lib, "winmm.lib")
 
 void features();
+bool cheat::can_draw = false;
 
 void cheat::cheat_thread()
 {
@@ -19,8 +20,13 @@ void cheat::cheat_thread()
 		if (settings::unlock_all)
 			game::unlock_all();
 
-		if (cur_round == 4 || cur_round == 2 || cur_round == 5)
+		if (cur_round == 3)
+		{
 			features();
+			can_draw = true;
+		}
+		else
+			can_draw = false;
 
 		if (settings::end)
 		{

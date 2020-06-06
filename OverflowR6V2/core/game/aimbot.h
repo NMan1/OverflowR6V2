@@ -170,10 +170,10 @@ namespace game
 		return vec3_t(x, 0.f, z + 90.f);
 	}
 
-	bool w2s(vec3_t position, vec_t& Screen)
+	static bool w2s(vec3_t position, vec_t& Screen)
 	{
 		if (!camera)
-			return false;
+			get_camera();
 
 		vec3_t temp = position - get_view_translation();
 
@@ -187,7 +187,7 @@ namespace game
 		return z >= 1.0f ? true : false;
 	}
 
-	float CrosshairDistance(vec_t vScreenPos)
+	static float CrosshairDistance(vec_t vScreenPos)
 	{
 		return sqrt(pow(vScreenPos.y - (1080 / 2.f), 2.f) + pow(vScreenPos.x - (1920 / 2.f), 2.f));
 	}
@@ -215,7 +215,7 @@ namespace game
 			if (!is_enemy(entity))
 				continue;
 
-			auto bone_pos = get_bone(entity);
+			auto bone_pos = get_bone(entity, BONE_HEAD);
 			vec_t out;
 			if (!w2s(bone_pos, out))
 				continue;

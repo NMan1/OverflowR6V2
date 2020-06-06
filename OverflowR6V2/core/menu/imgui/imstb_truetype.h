@@ -1,4 +1,4 @@
-// [DEAR IMGUI] 
+// [DEAR IMGUI]
 // This is a slightly modified version of stb_truetype.h 1.20.
 // Mostly fixing for compiler and static analyzer warnings.
 // Grep for [DEAR IMGUI] to find the changes.
@@ -1603,10 +1603,10 @@ STBTT_DEF int stbtt_GetGlyphBox(const stbtt_fontinfo* info, int glyph_index, int
 		int g = stbtt__GetGlyfOffset(info, glyph_index);
 		if (g < 0) return 0;
 
-		if (x0)*x0 = ttSHORT(info->data + g + 2);
-		if (y0)*y0 = ttSHORT(info->data + g + 4);
-		if (x1)*x1 = ttSHORT(info->data + g + 6);
-		if (y1)*y1 = ttSHORT(info->data + g + 8);
+		if (x0) *x0 = ttSHORT(info->data + g + 2);
+		if (y0) *y0 = ttSHORT(info->data + g + 4);
+		if (x1) *x1 = ttSHORT(info->data + g + 6);
+		if (y1) *y1 = ttSHORT(info->data + g + 8);
 	}
 	return 1;
 }
@@ -2280,10 +2280,10 @@ static int stbtt__GetGlyphInfoT2(const stbtt_fontinfo* info, int glyph_index, in
 {
 	stbtt__csctx c = STBTT__CSCTX_INIT(1);
 	int r = stbtt__run_charstring(info, glyph_index, &c);
-	if (x0)*x0 = r ? c.min_x : 0;
-	if (y0)*y0 = r ? c.min_y : 0;
-	if (x1)*x1 = r ? c.max_x : 0;
-	if (y1)*y1 = r ? c.max_y : 0;
+	if (x0)  *x0 = r ? c.min_x : 0;
+	if (y0)  *y0 = r ? c.min_y : 0;
+	if (x1)  *x1 = r ? c.max_x : 0;
+	if (y1)  *y1 = r ? c.max_y : 0;
 	return r ? c.num_vertices : 0;
 }
 
@@ -2299,12 +2299,12 @@ STBTT_DEF void stbtt_GetGlyphHMetrics(const stbtt_fontinfo* info, int glyph_inde
 {
 	stbtt_uint16 numOfLongHorMetrics = ttUSHORT(info->data + info->hhea + 34);
 	if (glyph_index < numOfLongHorMetrics) {
-		if (advanceWidth)*advanceWidth = ttSHORT(info->data + info->hmtx + 4 * glyph_index);
-		if (leftSideBearing)*leftSideBearing = ttSHORT(info->data + info->hmtx + 4 * glyph_index + 2);
+		if (advanceWidth)     *advanceWidth = ttSHORT(info->data + info->hmtx + 4 * glyph_index);
+		if (leftSideBearing)  *leftSideBearing = ttSHORT(info->data + info->hmtx + 4 * glyph_index + 2);
 	}
 	else {
-		if (advanceWidth)*advanceWidth = ttSHORT(info->data + info->hmtx + 4 * (numOfLongHorMetrics - 1));
-		if (leftSideBearing)*leftSideBearing = ttSHORT(info->data + info->hmtx + 4 * numOfLongHorMetrics + 2 * (glyph_index - numOfLongHorMetrics));
+		if (advanceWidth)     *advanceWidth = ttSHORT(info->data + info->hmtx + 4 * (numOfLongHorMetrics - 1));
+		if (leftSideBearing)  *leftSideBearing = ttSHORT(info->data + info->hmtx + 4 * numOfLongHorMetrics + 2 * (glyph_index - numOfLongHorMetrics));
 	}
 }
 
@@ -2564,11 +2564,11 @@ static stbtt_int32  stbtt__GetGlyphGPOSInfoAdvance(const stbtt_fontinfo* info, i
 					// There are no other cases.
 					STBTT_assert(0);
 					break;
-				};
+				} // [DEAR IMGUI] removed ;
 				}
 			}
 			break;
-		};
+		} // [DEAR IMGUI] removed ;
 
 		default:
 			// TODO: Implement other stuff.
@@ -2606,9 +2606,9 @@ STBTT_DEF void stbtt_GetCodepointHMetrics(const stbtt_fontinfo* info, int codepo
 
 STBTT_DEF void stbtt_GetFontVMetrics(const stbtt_fontinfo* info, int* ascent, int* descent, int* lineGap)
 {
-	if (ascent)*ascent = ttSHORT(info->data + info->hhea + 4);
-	if (descent)*descent = ttSHORT(info->data + info->hhea + 6);
-	if (lineGap)*lineGap = ttSHORT(info->data + info->hhea + 8);
+	if (ascent) *ascent = ttSHORT(info->data + info->hhea + 4);
+	if (descent) *descent = ttSHORT(info->data + info->hhea + 6);
+	if (lineGap) *lineGap = ttSHORT(info->data + info->hhea + 8);
 }
 
 STBTT_DEF int  stbtt_GetFontVMetricsOS2(const stbtt_fontinfo* info, int* typoAscent, int* typoDescent, int* typoLineGap)
@@ -2616,9 +2616,9 @@ STBTT_DEF int  stbtt_GetFontVMetricsOS2(const stbtt_fontinfo* info, int* typoAsc
 	int tab = stbtt__find_table(info->data, info->fontstart, "OS/2");
 	if (!tab)
 		return 0;
-	if (typoAscent)*typoAscent = ttSHORT(info->data + tab + 68);
-	if (typoDescent)*typoDescent = ttSHORT(info->data + tab + 70);
-	if (typoLineGap)*typoLineGap = ttSHORT(info->data + tab + 72);
+	if (typoAscent) *typoAscent = ttSHORT(info->data + tab + 68);
+	if (typoDescent) *typoDescent = ttSHORT(info->data + tab + 70);
+	if (typoLineGap) *typoLineGap = ttSHORT(info->data + tab + 72);
 	return 1;
 }
 
@@ -2657,17 +2657,17 @@ STBTT_DEF void stbtt_GetGlyphBitmapBoxSubpixel(const stbtt_fontinfo* font, int g
 	int x0 = 0, y0 = 0, x1, y1; // =0 suppresses compiler warning
 	if (!stbtt_GetGlyphBox(font, glyph, &x0, &y0, &x1, &y1)) {
 		// e.g. space character
-		if (ix0)*ix0 = 0;
-		if (iy0)*iy0 = 0;
-		if (ix1)*ix1 = 0;
-		if (iy1)*iy1 = 0;
+		if (ix0) *ix0 = 0;
+		if (iy0) *iy0 = 0;
+		if (ix1) *ix1 = 0;
+		if (iy1) *iy1 = 0;
 	}
 	else {
 		// move to integral bboxes (treating pixels as little squares, what pixels get touched)?
-		if (ix0)*ix0 = STBTT_ifloor(x0 * scale_x + shift_x);
-		if (iy0)*iy0 = STBTT_ifloor(-y1 * scale_y + shift_y);
-		if (ix1)*ix1 = STBTT_iceil(x1 * scale_x + shift_x);
-		if (iy1)*iy1 = STBTT_iceil(-y0 * scale_y + shift_y);
+		if (ix0) *ix0 = STBTT_ifloor(x0 * scale_x + shift_x);
+		if (iy0) *iy0 = STBTT_ifloor(-y1 * scale_y + shift_y);
+		if (ix1) *ix1 = STBTT_iceil(x1 * scale_x + shift_x);
+		if (iy1) *iy1 = STBTT_iceil(-y0 * scale_y + shift_y);
 	}
 }
 
@@ -3621,10 +3621,10 @@ STBTT_DEF unsigned char* stbtt_GetGlyphBitmapSubpixel(const stbtt_fontinfo* info
 	gbm.h = (iy1 - iy0);
 	gbm.pixels = NULL; // in case we error
 
-	if (width)*width = gbm.w;
-	if (height)*height = gbm.h;
-	if (xoff)*xoff = ix0;
-	if (yoff)*yoff = iy0;
+	if (width) *width = gbm.w;
+	if (height) *height = gbm.h;
+	if (xoff) *xoff = ix0;
+	if (yoff) *yoff = iy0;
 
 	if (gbm.w && gbm.h) {
 		gbm.pixels = (unsigned char*)STBTT_malloc(gbm.w * gbm.h, info->userdata);
@@ -4182,7 +4182,7 @@ STBTT_DEF void stbtt_PackFontRangesPackRects(stbtt_pack_context* spc, stbrp_rect
 STBTT_DEF int stbtt_PackFontRanges(stbtt_pack_context* spc, const unsigned char* fontdata, int font_index, stbtt_pack_range* ranges, int num_ranges)
 {
 	stbtt_fontinfo info;
-	int i, j, n, return_value = 1;
+	int i, j, n, return_value; // [DEAR IMGUI] removed = 1
 	//stbrp_context *context = (stbrp_context *) spc->pack_info;
 	stbrp_rect* rects;
 
@@ -4486,10 +4486,10 @@ STBTT_DEF unsigned char* stbtt_GetGlyphSDF(const stbtt_fontinfo* info, float sca
 	w = (ix1 - ix0);
 	h = (iy1 - iy0);
 
-	if (width)*width = w;
-	if (height)*height = h;
-	if (xoff)*xoff = ix0;
-	if (yoff)*yoff = iy0;
+	if (width) *width = w;
+	if (height) *height = h;
+	if (xoff) *xoff = ix0;
+	if (yoff) *yoff = iy0;
 
 	// invert for y-downwards bitmaps
 	scale_y = -scale_y;
