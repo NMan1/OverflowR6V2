@@ -2,7 +2,7 @@
 ## V2 Edition 
 
 A modified version of my old cheat https://github.com/NMan1/Rainbow-Six-Cheat.
-I changed the bypass to a SSDT hook, its a inline hook a little bit modified nothing crazy though.
+I changed the bypass to a kernel function hook, its a inline hook a little bit modified nothing crazy though.
 
 The cheat itself is cleaned up and reducded down to just the cheat menu no loader.
 
