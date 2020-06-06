@@ -161,6 +161,8 @@ public:
 
 		printf("	[+] d2d1 brush : 0x%p\n", d2d_brush.Get());
 
+		create_factory();
+
 		driver::get_thread(local_window_handle, &local_thread);
 		driver::get_thread(remote_window, &remote_thread);
 
@@ -182,6 +184,24 @@ public:
 			
 		printf("	[+] window composed\n");
 		return;
+	}
+
+	void create_factory()
+	{
+		static const WCHAR msc_fontName[] = L"Verdana";
+		static const FLOAT msc_fontSize = 12;
+		HRESULT hr;
+		hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, d2d_factory.GetAddressOf());
+
+		if (SUCCEEDED(hr))
+			hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(d2d_write_factory), reinterpret_cast<IUnknown**>(d2d_write_factory.GetAddressOf()));
+		if (SUCCEEDED(hr))
+			hr = d2d_write_factory->CreateTextFormat(msc_fontName, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, msc_fontSize,L"", d2d_text_format.GetAddressOf());
+		if (SUCCEEDED(hr))
+		{
+			d2d_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+			d2d_text_format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+		}
 	}
 
 	void begin_scene()
@@ -237,6 +257,24 @@ public:
 		d2d_brush->SetColor(D2D1::ColorF(color.r / 255, color.g / 255, color.b / 255, color.a / 255));
 		d2d_context->FillEllipse(ellipse, d2d_brush.Get());
 	}
+	
+	void draw_text(std::wstring text, float x, float y, float font_size, clr color)
+	{
+		d2d_brush->SetColor(D2D1::ColorF(color.r / 255, color.g / 255, color.b / 255, color.a / 255));
+		RECT re;
+		GetClientRect(remote_window, &re);
+		FLOAT dpix, dpiy;
+		dpix = static_cast<float>(re.right - re.left);
+		dpiy = static_cast<float>(re.bottom - re.top);
+		HRESULT res = d2d_write_factory->CreateTextLayout(text.c_str(), text.length(), d2d_text_format.Get(), dpix, dpiy, d2d_text_layout.GetAddressOf());
+		if (SUCCEEDED(res))
+		{
+			d2d_text_layout->SetFontSize(font_size, DWRITE_TEXT_RANGE{ 0, text.length() });
+			d2d_context->DrawTextLayout(D2D1_POINT_2F{ x, y }, d2d_text_layout.Get(), d2d_brush.Get());
+			d2d_text_layout->Release();
+			d2d_text_layout = nullptr;
+		}
+	}
 
 	void manual_destruct()
 	{
@@ -269,7 +307,11 @@ public:
 	ComPtr<IDXGISwapChain1> dxgi_chain;
 	ComPtr<ID2D1DeviceContext> d2d_context;
 	ComPtr<ID3D11DeviceContext> d3d_context;
-
+	ComPtr<ID2D1Factory> d2d_factory;
+	ComPtr<IDWriteFactory> d2d_write_factory;
+	ComPtr<IDWriteTextFormat> d2d_text_format;
+	ComPtr<IDWriteTextLayout> d2d_text_layout;
+	
 	ComPtr<IDCompositionDevice> composition_device;
 	ComPtr<IDCompositionTarget> composition_target;
 	ComPtr<IDCompositionVisual> composition_visual;
