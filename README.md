@@ -8,6 +8,7 @@ The cheat itself is cleaned up and reducded down to just the cheat menu no loade
 
 Features: 
   - Rapid fire
+  - Aimbot
   - Chams
   - No recoil
   - No spread
@@ -16,7 +17,8 @@ Features:
   - Weapon fov changer
   - Player fov changer
   
-The aimbot isnt implemented yet (or maybe ever).
+
 May or may not be safe, depends on if shiteye has sigged nops beteewn the inline mov jmp rax hook.
 
-
+<img src="https://i.imgur.com/QKopdHE.png"/>
+<img src="https://i.imgur.com/xTxUtWR.png"/>
