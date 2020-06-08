@@ -25,7 +25,7 @@ May or may not be safe, depends on how shiteye detects the modifed function hook
 <img src="https://i.imgur.com/xTxUtWR.png"/>
 
 
-**Compiling**
+# **Compiling**
 
 1. Right click on "OverflowR6Rust.sln" in the first folder.
 2. Open it in a text editor such as notepad++
