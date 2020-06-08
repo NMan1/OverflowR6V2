@@ -18,7 +18,7 @@ Features:
   - Player fov changer
   
 
-May or may not be safe, depends on if shiteye has sigged nops beteewn the inline mov jmp rax hook.
+May or may not be safe, depends on how shiteye detects the modifed function hook (comparing the function to the original sig etc)
 
 <img src="https://i.imgur.com/QKopdHE.png"/>
 <img src="https://i.imgur.com/xTxUtWR.png"/>
