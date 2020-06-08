@@ -2,7 +2,7 @@
 #include "imports.h"
 
 
-NTSTATUS GetPid(HANDLE* pid)
+NTSTATUS GetPid(HANDLE* pid, const char* process)
 {
 	// ZwQuery
 	ULONG CallBackLength = 0;
@@ -11,10 +11,13 @@ NTSTATUS GetPid(HANDLE* pid)
 	PVOID BufferPid = NULL;
 	NTSTATUS Status = STATUS_UNSUCCESSFUL;
 
-	// Names
-	PCWSTR R6 = L"RainbowSix.exe";
-	UNICODE_STRING uImageNameR6;
-	RtlInitUnicodeString(&uImageNameR6, R6);
+	ANSI_STRING AS;
+	UNICODE_STRING process_name;
+
+	RtlInitAnsiString(&AS, process);
+	RtlAnsiStringToUnicodeString(&process_name, &AS, TRUE);
+
+	DbgPrintEx(0, 0, "\nSearch for %wZ process id", process_name);
 
 here:; // need to loop because new process spawn making our buffer already to small
 	if (!NT_SUCCESS(ZwQuerySystemInformation(SystemProcessInformation, NULL, NULL, &CallBackLength)))
@@ -41,7 +44,7 @@ here:; // need to loop because new process spawn making our buffer already to sm
 			if (PSI->NextEntryOffset == 0)
 				break;
 
-			if (RtlEqualUnicodeString(&uImageNameR6, &PSI->ImageName, FALSE))
+			if (RtlEqualUnicodeString(&process_name, &PSI->ImageName, FALSE))
 			{
 				DbgPrintEx(0, 0, "PID %d | NAME %ws\n", PSI->UniqueProcessId, PSI->ImageName.Buffer);
 				*pid = PSI->UniqueProcessId;

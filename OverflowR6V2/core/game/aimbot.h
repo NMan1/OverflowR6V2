@@ -181,15 +181,15 @@ namespace game
 		float y = temp.Dot(get_view_up());
 		float z = temp.Dot(get_view_forward() * -1.f);
 
-		Screen.x = (1920 / 2.f) * (1.f + x / get_view_x() / z);
-		Screen.y = (1080 / 2.f) * (1.f - y / get_view_y() / z);
+		Screen.x = (wnd_hjk::screen_resolution.first / 2.f) * (1.f + x / get_view_x() / z);
+		Screen.y = (wnd_hjk::screen_resolution.second / 2.f) * (1.f - y / get_view_y() / z);
 
 		return z >= 1.0f ? true : false;
 	}
 
 	static float CrosshairDistance(vec_t vScreenPos)
 	{
-		return sqrt(pow(vScreenPos.y - (1080 / 2.f), 2.f) + pow(vScreenPos.x - (1920 / 2.f), 2.f));
+		return sqrt(pow(vScreenPos.y - (wnd_hjk::screen_resolution.second / 2.f), 2.f) + pow(vScreenPos.x - (wnd_hjk::screen_resolution.first / 2.f), 2.f));
 	}
 
 	static vec3_t get_closest_enemy()

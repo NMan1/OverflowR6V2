@@ -277,7 +277,7 @@ typedef struct _copy_memory
 {
 	BOOLEAN read;
 	BOOLEAN read_string;
-	void*     buffer_address;
+	void* buffer_address;
 	UINT_PTR  address;
 	ULONGLONG size;
 	void* output;
@@ -290,6 +290,7 @@ typedef struct _copy_memory
 	const char* module_name;
 
 	BOOLEAN get_pid;
+	const char* process_name;
 	ULONG pid_of_source;
 
 	BOOLEAN alloc_memory;
@@ -298,4 +299,28 @@ typedef struct _copy_memory
 	BOOLEAN		change_protection;
 	ULONG		protection;
 	ULONG		protection_old;
+
+	BOOLEAN get_thread_context;
+	BOOLEAN set_thread_context;
+
+	HWND window_handle;
+	UINT_PTR thread_context;
 }copy_memory;
+
+// Win32k structures
+typedef struct _tag_thread_info
+{
+	PETHREAD owning_thread;
+}tag_thread_info;
+
+typedef struct _tag_wnd
+{
+	char pad_0[0x10];
+	tag_thread_info* thread_info;
+}tag_wnd;
+
+typedef struct _generic_thread_ctx_t
+{
+	UINT_PTR window_handle;
+	UINT_PTR thread_pointer;
+}generic_thread_ctx_t;

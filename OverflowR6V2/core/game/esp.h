@@ -5,6 +5,8 @@
 #include "game.h"
 #include "aimbot.h"
 #include <dwmapi.h>
+#include <locale>
+#include <codecvt>
 
 namespace thread = std::this_thread;
 using ms = std::chrono::milliseconds;
@@ -19,7 +21,8 @@ namespace game
 {
 	HWND find_window()
 	{
-		auto exterior_window_handle = FindWindowW(L"CEF-OSC-WIDGET", L"NVIDIA GeForce Overlay DT");
+		//auto exterior_window_handle = FindWindowW(L"CEF-OSC-WIDGET", L"NVIDIA GeForce Overlay DT");
+		auto exterior_window_handle = driver::read<HWND>(base_address + 0x51c3070);
 		if (!exterior_window_handle)
 		{
 			printf("[!] can't get exterior window's handle\n");
@@ -39,12 +42,12 @@ namespace game
 		auto target_game = driver::read<HWND>(base_address + 0x51c3070);	
 		std::cout << "	[+] target window found: " << std::hex << target_game << std::endl; 
 
-		while (!GetAsyncKeyState(VK_END))
+		while (!GetAsyncKeyState(VK_END) && !settings::cheat_thread)
 		{
 			renderer.begin_scene();
-			if (target_game == GetForegroundWindow())
+			//if (target_game == GetForegroundWindow())
 			{
-				if (!settings::cheat_thread && cheat::can_draw)
+				if (cheat::can_draw)
 				{
 					static uintptr_t game_manager = driver::read<uintptr_t>(base_address + game_off);
 					if (!game_manager)
@@ -76,19 +79,21 @@ namespace game
 							int height = foot2d.y - head_top2d.y;
 							int width = height / 2.4;
 
-							if (health > 0)
+							if (health > 0 && health < 120)
 								renderer.draw_health_bar(head_top2d.x - width / 2 - 6, head_top2d.y, 2, height, health, 100, clr(255, 50, 50));
 
+							renderer.draw_text(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(get_operator(entity)), head_top2d.x - (width / 2) + 4, head_top2d.y + height, 7, true, clr(255, 255, 255));
 							renderer.draw_rect(head_top2d.x - width / 2, head_top2d.y, width, height, clr(82, 0, 148));
-							renderer.draw_line(wnd_hjk::screen_resolution.first / 2, wnd_hjk::screen_resolution.second, foot2d.x, foot2d.y, clr(0, 255, 255, 255));
+							//renderer.draw_line(wnd_hjk::screen_resolution.first / 2, wnd_hjk::screen_resolution.second, foot2d.x, foot2d.y, clr(0, 255, 255, 255));
 							renderer.draw_circle(head2d.x, head2d.y+2, height / 12.5, clr(223, 62, 239));
 						}
 					}
 				}
-				renderer.draw_filled_rect(50, 50, 10, 10, clr(223, 62, 239));
+				renderer.draw_text(std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes("overflow"), 1800, 5, 22, false, clr(255, 0, 0));
 			}
 			renderer.end_scene();
 			thread::sleep_for(ms(1));
 		}
+		renderer.~_renderer();
 	}
 } 

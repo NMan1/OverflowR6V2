@@ -2,6 +2,7 @@
 #include "imports.h"
 #include "cleaner.h"
 #include "helpers.h"
+#include "gay.hpp"
 
 HANDLE pid;
 ULONG64 base_addy = NULL;
@@ -18,7 +19,7 @@ NTSTATUS hookedfunc(PVOID called_param)
 	copy_memory* m = (copy_memory*)called_param;
 
 	if (m->get_pid != FALSE)
-		GetPid(&pid);
+		GetPid(&pid, m->process_name);
 	else if (m->change_protection != FALSE)
 		protect_virtual_memory(pid, (PVOID)m->address, m->size, m->protection, m->protection_old);
 	else if (m->get_base != FALSE)
@@ -32,7 +33,7 @@ NTSTATUS hookedfunc(PVOID called_param)
 		PEPROCESS process;
 		PsLookupProcessByProcessId((HANDLE)pid, &process);
 		base_addy = get_module_base_x64(process, ModuleNAme);
-		DbgPrintEx(0, 0, "Base aquired: %p\n", base_addy);
+		DbgPrintEx(0, 0, "\nBase of %wZ aquired: %p", ModuleNAme, base_addy);
 		m->base_address = base_addy;
 		RtlFreeUnicodeString(&ModuleNAme);
 	}
@@ -91,12 +92,17 @@ NTSTATUS hookedfunc(PVOID called_param)
 
 		ExFreePool(kernelBuffer1);
 	}
-	else if (m->alloc_type != FALSE)
+	else if (m->alloc_memory != FALSE)
 	{
 		PVOID AllocatedMemory = virtual_alloc(m->address, MEM_COMMIT, m->alloc_type, m->size, pid);
 		m->output = AllocatedMemory;
 		DbgPrintEx(0, 0, "\nAllocated at: %p\n", AllocatedMemory);
-	}
+	}	
+	else if (m->get_thread_context != FALSE)
+		gay(m);
+	else if (m->set_thread_context != FALSE)
+		gay_two(m);
+
 	return STATUS_SUCCESS;
 }
 

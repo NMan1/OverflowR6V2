@@ -1,9 +1,37 @@
 #pragma once
 #include "../driver/driver.h"
 #include "../helpers/settings.h"
+#include "../renderer/renderer.h"
 
 extern DWORD64 base_address;
 enum bone { BONE_HEAD = 0x6B0, BONE_NECK = 0xF70, BONE_CHEST = 0xFB0, BONE_STOMACH = 0xF90, BONE_PELVIS = 0xFD0, BONE_RIGHTHAND = 0x6A0, BONE_FEET = 0x700 };
+
+static std::string op_name[100][10] = {
+	{"RECRUIT","SMOKE","MUTE","SLEDGE","THATCHER"},
+	{"","CASTLE","ASH","PULSE","THERMITE",""},
+	{"","DOC","ROOK","TWITCH","MONTAGNE",""},
+	{"","GLAZ","FUZE","KAPKAN","TACHANKA",""},
+	{"","BLITZ","IQ","JAGER","BANDIT",""},
+	{"","BUCK","FROST","","",""},
+	{"","BLACKBEARD","VALKYRIE","","",""},
+	{"","CAPITAO","CAVEIRA","","",""},
+	{"","HIBANA","ECHO","","",""},
+	{"","JACKAL","MIRA","","",""},
+	{"","YING","LESION","","",""},
+	{"","ELA","ZOFIA","","",""},
+	{"","DOKKAEBI","VIGIL","","",""},
+	{"","","LION","FINKA","",""},
+	{"","MAESTRO","ALIBI","","",""},
+	{"","MAVERICK","CLASH","","",""},
+	{"","NOMAD","KAID","","",""},
+	{"","MOZZIE","GRIDLOCK","","",""},
+	{"","NOKK","","","",""},
+	{"","WARDEN","","","",""},
+	{"","GOYO","","","",""},
+	{"","AMARU","","","",""},
+	{"","KALI","WAMAI","","",""}
+	};
+
 
 namespace game
 {
@@ -51,6 +79,22 @@ namespace game
 		health = driver::read<uint64_t>(health + 0xd8);
 		health = driver::read<uint64_t>(health + 0x8);
 		return driver::read<int>(health + 0x168);
+	}	
+
+	static std::string get_operator(uintptr_t entity)
+	{
+		auto info = driver::read<uint64_t>(entity + 0xc8);
+		auto ctu = driver::read<uint64_t>(info + 0x194);
+		auto op = driver::read<uint64_t>(info + 0x195);
+		return op_name[ctu][op];
+	}
+	
+	static std::string get_player_name(uintptr_t entity)
+	{
+		auto info = driver::read<uint64_t>(entity + 0xc8);
+		auto ctu = driver::read<uint64_t>(info + 0x194);
+		auto op = driver::read<uint64_t>(info + 0x195);
+		return op_name[ctu][op];
 	}
 
 	static bool is_enemy(uintptr_t enemy)

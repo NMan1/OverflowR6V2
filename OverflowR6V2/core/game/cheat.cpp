@@ -20,7 +20,7 @@ void cheat::cheat_thread()
 		if (settings::unlock_all)
 			game::unlock_all();
 
-		if (cur_round == 3)
+		if (cur_round == 3 || cur_round == 2)
 		{
 			features();
 			can_draw = true;

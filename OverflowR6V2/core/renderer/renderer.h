@@ -24,7 +24,6 @@
 #define RET_CHK(x) if ( x != S_OK ) return;
 #define RET_CHK2(x) if ( x != S_OK ) { driver::set_thread( remote_window, remote_thread ); return; }
 
-
 class d2d_window_t
 {
 public:
@@ -189,7 +188,7 @@ public:
 	void create_factory()
 	{
 		static const WCHAR msc_fontName[] = L"Verdana";
-		static const FLOAT msc_fontSize = 12;
+		static const FLOAT msc_fontSize = 8;
 		HRESULT hr;
 		hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, d2d_factory.GetAddressOf());
 
@@ -197,11 +196,6 @@ public:
 			hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(d2d_write_factory), reinterpret_cast<IUnknown**>(d2d_write_factory.GetAddressOf()));
 		if (SUCCEEDED(hr))
 			hr = d2d_write_factory->CreateTextFormat(msc_fontName, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, msc_fontSize,L"", d2d_text_format.GetAddressOf());
-		if (SUCCEEDED(hr))
-		{
-			d2d_text_format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-			d2d_text_format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-		}
 	}
 
 	void begin_scene()
@@ -258,22 +252,60 @@ public:
 		d2d_context->FillEllipse(ellipse, d2d_brush.Get());
 	}
 	
-	void draw_text(std::wstring text, float x, float y, float font_size, clr color)
+	void get_text_size(const std::wstring_view text, float* const width, float* const height)
+	{
+		if (!text.empty()) 
+		{
+			if (!width && !height) 
+				return;
+		
+			RECT re;
+			GetClientRect(remote_window, &re);
+			FLOAT dpix, dpiy;
+			dpix = static_cast<float>(re.right - re.left);
+			dpiy = static_cast<float>(re.bottom - re.top);
+			
+			IDWriteTextLayout* layout = nullptr;
+			const auto status = d2d_write_factory->CreateTextLayout(
+				text.data(),
+				static_cast<std::uint32_t>(text.length()),
+				d2d_text_format.Get(),
+				dpix,
+				dpiy,
+				&layout
+			);
+
+			if (SUCCEEDED(status)) 
+			{
+				DWRITE_TEXT_METRICS metrics{};
+				if (SUCCEEDED(layout->GetMetrics(&metrics))) 
+				{
+					if (width)
+						*width = metrics.width;
+					if (height) 
+						*height = metrics.height;
+				}
+				layout->Release();
+			}
+		}
+	}
+
+	void draw_text(std::wstring text, float x, float y, float font_size, bool center, clr color)
 	{
 		d2d_brush->SetColor(D2D1::ColorF(color.r / 255, color.g / 255, color.b / 255, color.a / 255));
-		RECT re;
-		GetClientRect(remote_window, &re);
-		FLOAT dpix, dpiy;
-		dpix = static_cast<float>(re.right - re.left);
-		dpiy = static_cast<float>(re.bottom - re.top);
-		HRESULT res = d2d_write_factory->CreateTextLayout(text.c_str(), text.length(), d2d_text_format.Get(), dpix, dpiy, d2d_text_layout.GetAddressOf());
+		HRESULT res = d2d_write_factory->CreateTextLayout(text.c_str(), static_cast<UINT32>(text.length()) + 1, d2d_text_format.Get(), 1920, 1080, d2d_text_layout.GetAddressOf());
 		if (SUCCEEDED(res))
 		{
-			d2d_text_layout->SetFontSize(font_size, DWRITE_TEXT_RANGE{ 0, text.length() });
-			d2d_context->DrawTextLayout(D2D1_POINT_2F{ x, y }, d2d_text_layout.Get(), d2d_brush.Get());
+			float x2, y2;
+			if (center)
+				get_text_size(text, &x2, &y2);
+			d2d_text_layout->SetFontSize(font_size, DWRITE_TEXT_RANGE{ 0, static_cast<UINT32>(text.length()) });
+			D2D1_POINT_2F origin;
+			center ? origin = { x - (x2 / 2), y } : origin = { x, y };
+			d2d_context->DrawTextLayout(origin, d2d_text_layout.Get(), d2d_brush.Get());
 			d2d_text_layout->Release();
-			d2d_text_layout = nullptr;
 		}
+		//d2d_context->DrawTextA(text.c_str(), text.length() + 1, d2d_text_format.Get(), D2D1_RECT_F{ x, y }, d2d_brush.Get());
 	}
 
 	void manual_destruct()
@@ -292,6 +324,10 @@ public:
 		composition_target->Release();
 
 		composition_device->Release();
+		d2d_text_format->Release();
+		d2d_text_layout->Release();
+		d2d_write_factory->Release();
+		d2d_factory->Release();
 
 		driver::set_thread(remote_window, remote_thread);
 	}
