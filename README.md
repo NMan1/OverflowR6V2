@@ -4,7 +4,8 @@
 A modified version of my old cheat https://github.com/NMan1/Rainbow-Six-Cheat.
 I changed the bypass to a kernel function hook, its a inline hook a little bit modified nothing crazy though.
 
-The cheat itself is cleaned up and reducded down to just the cheat menu no loader.
+The cheat itself is cleaned up (menu is still a fucking mess) and reduced down to just the cheat menu no loader.
+Code is in snake_case (the best)
 
 Features: 
   - Rapid fire
