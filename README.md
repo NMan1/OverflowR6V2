@@ -20,6 +20,7 @@ Features:
   
 
 May or may not be safe, depends on how shiteye detects the modifed function hook (comparing the function to the original sig etc)
+(Spoiler they do now, I used this before they did)
 
 <img src="https://i.imgur.com/QKopdHE.png"/>
 <img src="https://i.imgur.com/xTxUtWR.png"/>
